@@ -12,8 +12,10 @@ bool isEnough(double balance, double price);
 void setPrecision(int precision);
 
 //Service functions
-void InputPIN(bool& isCorrectPIN, const int PIN, const int MAX_TRYS_FOR_PIN);
+void ShowServicePIN();
 void ShowServiceMenu(int cupsCount, double balance);
+void InputPIN(bool& isCorrectPIN, bool& isMachineBlocked, const int PIN, const int MAX_TRYS_FOR_PIN);
+void ServiceSelectOption(const int CUPS_MAX, double& balance, int& cupCount, int input, bool& isCorrectPIN);
 
 int main()
 {
@@ -77,12 +79,24 @@ int main()
 		}
 		else if (userChoice == 5)
 		{
-			while(!isMachineBlocked){
-				ShowServicePIN();
-				InputPIN(isCorrectPIN, PIN, MAX_TRYS_FOR_PIN);
+			while (!isMachineBlocked) {
+				if (!isCorrectPIN) {
+					ShowServicePIN();
+					cout << "Your choise: ";
+					cin >> userChoice;
+					if (userChoice == 1) {
+						InputPIN(isCorrectPIN, isMachineBlocked, PIN, MAX_TRYS_FOR_PIN);
+					}
+					else {
+						break;
+					}
+				}
 
-				if(isCorrectPIN){
+				if (isCorrectPIN) {
 					ShowServiceMenu(cupCount, boxBalance);
+					cout << "Your choise: ";
+					cin >> userChoice;
+					ServiceSelectOption(CUP_MAX, boxBalance, cupCount, userChoice, isCorrectPIN);
 				}
 			}
 		}
@@ -191,11 +205,10 @@ void ShowServicePIN(){
 	cout << "=====================\n";
 }
 
-void InputPIN(bool& isCorrectPIN, const int PIN, const int MAX_TRYS_FOR_PIN, bool& isMachineBlocked){
+void InputPIN(bool& isCorrectPIN, bool& isMachineBlocked, const int PIN, const int MAX_TRYS_FOR_PIN){
 	int input;
 
 	for(int i = 0; i < MAX_TRYS_FOR_PIN; i++){
-		system("cls");
 		cout << "Enter PIN:";
 		cin >> input;
 		if(input == PIN){
@@ -205,7 +218,8 @@ void InputPIN(bool& isCorrectPIN, const int PIN, const int MAX_TRYS_FOR_PIN, boo
 	}
 
 	system("cls");
-	cout << "Input PIN INCORRECT! Machine blocked!";
+	cout << "Input PIN INCORRECT! Machine blocked!\n";
+	system("pause");
 	isMachineBlocked = true;
 }
 
@@ -240,7 +254,7 @@ void Withdrawal(int& balance){
 }
 
 
-void ServiceSelectOption(const int CUPS_MAX, int& balance, int& cupCount, int input, bool& isCorrectPIN){
+void ServiceSelectOption(const int CUPS_MAX, double& balance, int& cupCount, int input, bool& isCorrectPIN){
 	while(true){
 		switch (input)
 		{
@@ -253,7 +267,6 @@ void ServiceSelectOption(const int CUPS_MAX, int& balance, int& cupCount, int in
 			break;
 		default:
 			"Your input Incorrect! Input [1..3], please\n";
-			ShowServiceMenu(cupCount, balance);
 			break;
 		}
 	}
