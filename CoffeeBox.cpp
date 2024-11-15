@@ -14,6 +14,7 @@ void setPrecision(int precision);
 //Service functions
 void ShowServicePIN();
 void ShowCupsMenu();
+void Withdrawal(double& balance);
 void AddCups(const int CUPS_MAX, int& cupCount);
 void ShowServiceMenu(int cupsCount, double balance);
 void BlockMaintance(bool& isCorrectPIN);
@@ -104,7 +105,7 @@ int main()
 						break;
 					}
 					else if(userChoice == 2){
-
+						Withdrawal(boxBalance);
 					} else if(userChoice == 1){
 						ShowCupsMenu();
 						AddCups(CUP_MAX, cupCount);
@@ -259,8 +260,8 @@ void ShowCupsMenu(){
 	cout << "=====================\n";
 }
 
-void Withdrawal(int& balance){
-	balance = 0;
+void Withdrawal(double& balance){
+	balance = 0.0;
 	cout << "Balance cleared";
 	system("pause");
 }
