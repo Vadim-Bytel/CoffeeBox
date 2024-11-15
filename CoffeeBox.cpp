@@ -3,13 +3,13 @@
 using namespace std;
 
 //userFunctions
-void showCoffeeMenu(double balance);
-void showCoinMenu(double balance);
-void showMaintenanceMenu();
-double getCoin(double userBalance);
-double payment(double userBalance, double price);
-bool isEnough(double balance, double price);
-void setPrecision(int precision);
+void ShowCoffeeMenu(double balance);
+void ShowCoinMenu(double balance);
+void ShowMaintenanceMenu();
+double GetCoin(double userBalance);
+double Payment(double userBalance, double price);
+bool IsEnough(double balance, double price);
+void SetPrecision(int precision);
 
 //Service functions
 void ShowServicePIN();
@@ -37,7 +37,7 @@ int main()
 	bool isCorrectPIN = false;
 	bool isMachineBlocked = false;
 
-	setPrecision(2);
+	SetPrecision(2);
 	while (true)
 	{
 		//Проверка для взаимодействия с модулем Сервиса, не понадобится уберешь
@@ -46,11 +46,11 @@ int main()
 
 		if (cupCount > 0)
 		{
-			showCoffeeMenu(userBalance);
+			ShowCoffeeMenu(userBalance);
 		}
 		else
 		{
-			showMaintenanceMenu();
+			ShowMaintenanceMenu();
 			//Если кончились стаканчики доступен переход в сервис меню, для их пополнения
 		}
 
@@ -59,25 +59,25 @@ int main()
 
 		if (userChoice == 1)
 		{
-			userBalance = getCoin(userBalance);
+			userBalance = GetCoin(userBalance);
 			boxBalance += userBalance;
 
 		}
-		else if (userChoice == 2 && isEnough(userBalance, CAPPUCCINO_PRICE))
+		else if (userChoice == 2 && IsEnough(userBalance, CAPPUCCINO_PRICE))
 		{
-			userBalance = payment(userBalance, CAPPUCCINO_PRICE);
+			userBalance = Payment(userBalance, CAPPUCCINO_PRICE);
 			cout << "Ok, take your cappuccino\n";
 			cupCount--;
 		}
-		else if (userChoice == 3 && isEnough(userBalance, LATTE_PRICE))
+		else if (userChoice == 3 && IsEnough(userBalance, LATTE_PRICE))
 		{
-			userBalance = payment(userBalance, LATTE_PRICE);
+			userBalance = Payment(userBalance, LATTE_PRICE);
 			cout << "Ok, take your latte\n";
 			cupCount--;
 		}
-		else if (userChoice == 4 && isEnough(userBalance, ESPRESSO_PRICE))
+		else if (userChoice == 4 && IsEnough(userBalance, ESPRESSO_PRICE))
 		{
-			userBalance = payment(userBalance, ESPRESSO_PRICE);
+			userBalance = Payment(userBalance, ESPRESSO_PRICE);
 			cout << "Ok, take your espresso\n";
 			cupCount--;
 		}
@@ -124,12 +124,12 @@ int main()
 	return 0;
 }
 
-void setPrecision(int precision)
+void SetPrecision(int precision)
 {
 	cout << fixed << setprecision(precision);
 }
 
-void showCoffeeMenu(double balance)
+void ShowCoffeeMenu(double balance)
 {
 	system("cls");
 	cout << "==============\n"
@@ -142,7 +142,7 @@ void showCoffeeMenu(double balance)
 			 << "==============\n";
 }
 
-void showCoinMenu(double balance)
+void ShowCoinMenu(double balance)
 {
 	system("cls");
 	cout << "===========================\n"
@@ -156,20 +156,20 @@ void showCoinMenu(double balance)
 			 << "===========================\n";
 }
 
-void showMaintenanceMenu()
+void ShowMaintenanceMenu()
 {
 	system("cls");
 	cout << "ON MAINTENANCE\n";
 	cout << "5) Service\n";
 }
 
-double getCoin(double balance)
+double GetCoin(double balance)
 {
 	int choice = 0;
 
 	while (true)
 	{
-		showCoinMenu(balance);
+		ShowCoinMenu(balance);
 
 		cout << "Insert coin: ";
 		cin >> choice;
@@ -195,7 +195,7 @@ double getCoin(double balance)
 	}
 }
 
-bool isEnough(double balance, double price)
+bool IsEnough(double balance, double price)
 {
 	if (balance < price)
 	{
@@ -206,7 +206,7 @@ bool isEnough(double balance, double price)
 		return true;
 }
 
-double payment(double balance, double price)
+double Payment(double balance, double price)
 {
 	return balance - price;
 }
