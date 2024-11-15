@@ -239,7 +239,6 @@ void ShowServiceMenu(int cupsCount, double balance){
 	cout << "=====================\n";
 }
 
-//clear pin flag
 void BlockMaintance(bool& isCorrectPIN){
 	isCorrectPIN = false;
 }
@@ -272,5 +271,13 @@ void ServiceSelectOption(const int CUPS_MAX, double& balance, int& cupCount, int
 			break;
 		}
 	}
+}
 
+void AddCups(const int CUPS_MAX, int& cupCount) {
+	int addCups;
+	cout << "Input cups for add:";
+	cin >> addCups;
+	cupCount = max(CUPS_MAX, cupCount + addCups);
+	cout << "New count of cups: " << cupCount << endl;
+	system("pause");
 }
