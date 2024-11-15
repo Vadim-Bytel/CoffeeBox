@@ -96,7 +96,12 @@ int main()
 					ShowServiceMenu(cupCount, boxBalance);
 					cout << "Your choise: ";
 					cin >> userChoice;
-					ServiceSelectOption(CUP_MAX, boxBalance, cupCount, userChoice, isCorrectPIN);
+					if (userChoice == 3) {
+						BlockMaintance(isCorrectPIN);
+						break;
+					} else {
+						ServiceSelectOption(CUP_MAX, boxBalance, cupCount, userChoice, isCorrectPIN);
+					}
 				}
 			}
 		}
@@ -261,9 +266,6 @@ void ServiceSelectOption(const int CUPS_MAX, double& balance, int& cupCount, int
 		case 1:
 			break;
 		case 2:
-			break;
-		case 3: 
-			BlockMaintance(isCorrectPIN);
 			break;
 		default:
 			"Your input Incorrect! Input [1..3], please\n";
