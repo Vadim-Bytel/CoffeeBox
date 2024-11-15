@@ -11,8 +11,21 @@ double payment(double userBalance, double price);
 bool isEnough(double balance, double price);
 void setPrecision(int precision);
 
+//Service functions
+void ShowServicePIN();
+void ShowCupsMenu();
+void Withdrawal(double& balance);
+void AddCups(const int CUPS_MAX, int& cupCount);
+void ShowServiceMenu(int cupsCount, double balance);
+void BlockMaintance(bool& isCorrectPIN);
+void InputPIN(bool& isCorrectPIN, bool& isMachineBlocked, const int PIN, const int MAX_TRYS_FOR_PIN);
+void ServiceSelectOption(const int CUPS_MAX, double& balance, int& cupCount, int input, bool& isCorrectPIN);
+
 int main()
 {
+	const int PIN = 1234;
+	const int CUP_MAX = 50;
+	const int MAX_TRYS_FOR_PIN = 3;
 	const double CAPPUCCINO_PRICE = 2.0;
 	const double LATTE_PRICE = 3.0;
 	const double ESPRESSO_PRICE = 1.5;
@@ -21,6 +34,8 @@ int main()
 	int cupCount = 2;
 	double userBalance = 0.0;
 	double boxBalance = 0.0;
+	bool isCorrectPIN = false;
+	bool isMachineBlocked = false;
 
 	setPrecision(2);
 	while (true)
@@ -68,7 +83,37 @@ int main()
 		}
 		else if (userChoice == 5)
 		{
-			//service functions
+			while (!isMachineBlocked) {
+				if (!isCorrectPIN) {
+					ShowServicePIN();
+					cout << "Your choise: ";
+					cin >> userChoice;
+					if (userChoice == 1) {
+						InputPIN(isCorrectPIN, isMachineBlocked, PIN, MAX_TRYS_FOR_PIN);
+					}
+					else {
+						break;
+					}
+				}
+
+				if (isCorrectPIN) {
+					ShowServiceMenu(cupCount, boxBalance);
+					cout << "Your choise: ";
+					cin >> userChoice;
+					if (userChoice == 3) {
+						BlockMaintance(isCorrectPIN);
+						break;
+					}
+					else if(userChoice == 2){
+						Withdrawal(boxBalance);
+					} else if(userChoice == 1){
+						ShowCupsMenu();
+						AddCups(CUP_MAX, cupCount);
+					} else {
+						cout << "\nWrong choice. Input [1..3], please\n\n";
+					}
+				}
+			}
 		}
 		else if (userChoice < 1 || userChoice > 5)
 		{
@@ -164,4 +209,68 @@ bool isEnough(double balance, double price)
 double payment(double balance, double price)
 {
 	return balance - price;
+}
+
+void ShowServicePIN(){
+	system("cls");
+	cout << "=====================\n";
+	cout << "1) Enter PIN\n";
+	cout << "2) Back to CoffeeMenu\n"; 
+	cout << "=====================\n";
+}
+
+void InputPIN(bool& isCorrectPIN, bool& isMachineBlocked, const int PIN, const int MAX_TRYS_FOR_PIN){
+	int input;
+
+	for(int i = 0; i < MAX_TRYS_FOR_PIN; i++){
+		cout << "Enter PIN:";
+		cin >> input;
+		if(input == PIN){
+			isCorrectPIN = true;
+			return;
+		}
+	}
+
+	system("cls");
+	cout << "Input PIN INCORRECT! Machine blocked!\n";
+	system("pause");
+	isMachineBlocked = true;
+}
+
+void ShowServiceMenu(int cupsCount, double balance){
+	system("cls");
+	cout << "=====================\n";
+	cout << "Cups: " << cupsCount << endl;
+	cout << "Balance: " << balance << endl;
+	cout << "1) Add cups\n";
+	cout << "2) Withdrawal\n";
+	cout << "3) Back to Coffee menu\n"; 
+	cout << "=====================\n";
+}
+
+void BlockMaintance(bool& isCorrectPIN){
+	isCorrectPIN = false;
+}
+
+void ShowCupsMenu(){
+	system("cls");
+	cout << "=====================\n";
+	cout << "1) Input cups [0...50]\n";
+	cout << "2) Back to Service menu\n"; 
+	cout << "=====================\n";
+}
+
+void Withdrawal(double& balance){
+	balance = 0.0;
+	cout << "Balance cleared";
+	system("pause");
+}
+
+void AddCups(const int CUPS_MAX, int& cupCount) {
+	int addCups;
+	cout << "Input cups for add:";
+	cin >> addCups;
+	cupCount = min(CUPS_MAX, cupCount + abs(addCups));
+	cout << "New count of cups: " << cupCount << endl;
+	system("pause");
 }
